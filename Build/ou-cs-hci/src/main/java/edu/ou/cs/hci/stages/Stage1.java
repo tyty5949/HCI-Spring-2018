@@ -27,7 +27,6 @@ import java.awt.event.WindowEvent;
 /**
  * The <CODE>BuildTest</CODE> class.<P>
  *
-<<<<<<< HEAD
  * @author  Chris Weaver
  * @version %I%, %G%
  */
