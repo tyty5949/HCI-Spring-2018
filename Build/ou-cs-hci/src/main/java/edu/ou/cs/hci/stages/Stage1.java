@@ -16,16 +16,18 @@
 package edu.ou.cs.hci.stages;
 
 //import java.lang.*;
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 //******************************************************************************
 
 /**
  * The <CODE>BuildTest</CODE> class.<P>
  *
+<<<<<<< HEAD
  * @author  Chris Weaver
  * @version %I%, %G%
  */
