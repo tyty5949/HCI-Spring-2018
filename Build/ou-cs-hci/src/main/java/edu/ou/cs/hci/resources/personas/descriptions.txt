@@ -1,3 +1,4 @@
-Persona description one.
-Persona description two.
-Persona description three.
+Persona one is a teenager who is looking to browse for movies similar to the one they just saw in the theater. They are 15 years old and rarely go see them in the theaters, but they made an exception because the commercials for it looked really good.
+Persona two is a college graduate with a degree in film and enjoys memorizing facts about movies to then tell their friends. They are around 30 and work for a small tv studio which produces mostly web-series. They like to show up to work and talk about the latest movies and who was good in them and why.
+Persona three is Rick, after only being successful in that one TV show Andrew Lincoln changed his name to his character, who after retiring has decided he wants to watch just about every western ever made. He is not up on all this new age technology but likes to believe that he can figure it out since “all them young wippersnappers can”. Being from a media background himself, he enjoys watching the films with old actors who he never got to know.
+

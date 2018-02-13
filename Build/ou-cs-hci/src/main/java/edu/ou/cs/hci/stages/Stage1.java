@@ -16,11 +16,17 @@
 package edu.ou.cs.hci.stages;
 
 //import java.lang.*;
+
+import edu.ou.cs.hci.resources.Resources;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 //******************************************************************************
 
@@ -39,7 +45,10 @@ public final class Stage1
 	private static final Font	FONT =
 		new Font(Font.SERIF, Font.BOLD, 36);
 
-	//**********************************************************************
+	private static JList<String> scenariosList;
+	private static JTextArea scenariosTextArea;
+
+    //**********************************************************************
 	// Main
 	//**********************************************************************
 
@@ -84,40 +93,74 @@ public final class Stage1
 	    c.gridy = 2;
 	    c.gridwidth = 2;
 	    c.ipady = 375;
-	     panel.add(moviePoster, c);
-		
-	     //Next there is a description of the movie, including several key items
-		 JTextArea movieDescription=new JTextArea("Movie Name \nStar Actors \nRatings"
-		 		+ "\nLength of Movie \nRelease Date \nDescription");  
-	     c.gridx = 2;
-	     c.ipady = 300;
-	     panel.add(movieDescription, c);
-	     
-	     //Finally there is a panel for related movies
-	     //Related movies has its own panel
-	     JPanel relatedMovies=new JPanel(new GridBagLayout());
-	     c.gridx = 4;
-	     c.ipady = 1;
-	     panel.add(relatedMovies, c);
-	     
-	     //Add movie poster placeholders
-	     c.gridwidth = 2;
-	     makelabel("Related Movies", 0, 0, c, relatedMovies);
-	     makemovieposter(0, 1, c, relatedMovies);
-	     makemovieposter(1, 1, c, relatedMovies);
-	     makemovieposter(0, 2, c, relatedMovies);
-	     makemovieposter(1, 2, c, relatedMovies);
-		
-	     //Displays the frame
-	     frame.setVisible(true);
-			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		//Closing frame exits the program
-			frame.addWindowListener(new WindowAdapter() {
-					public void windowClosing(WindowEvent e) {
-						System.exit(0);
-					}
-				});
-		
+	    panel.add(moviePoster, c);
+
+        //Next there is a description of the movie, including several key items
+        JTextArea movieDescription=new JTextArea("Movie Name \nStar Actors \nRatings"
+            + "\nLength of Movie \nRelease Date \nDescription");
+        c.gridx = 2;
+        c.ipady = 300;
+        panel.add(movieDescription, c);
+
+        //Finally there is a panel for related movies
+        // Related movies has its own panel
+        JPanel relatedMovies=new JPanel(new GridBagLayout());
+        c.gridx = 4;
+        c.ipady = 1;
+        panel.add(relatedMovies, c);
+
+        //Add movie poster placeholders
+        c.gridwidth = 2;
+        makelabel("Related Movies", 0, 0, c, relatedMovies);
+        makemovieposter(0, 1, c, relatedMovies);
+        makemovieposter(1, 1, c, relatedMovies);
+        makemovieposter(0, 2, c, relatedMovies);
+        makemovieposter(1, 2, c, relatedMovies);
+
+        //Displays the frame
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Closing frame exits the program
+        frame.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+
+
+
+		// Frame for Personas and Scenarios
+        JFrame personasFrame = new JFrame("Personas and Scenarios");
+        JPanel personasPanel = new JPanel();
+        personasPanel.setBackground(Color.WHITE);
+
+        // JList
+        scenariosList = new JList<>();
+        scenariosList.setListData(Resources.getLines("/edu/ou/cs/hci/resources/scenarios/titles.txt")
+                .toArray(new String[]{}));
+        scenariosList.setSelectedIndex(0);
+        scenariosList.addListSelectionListener(new ScenariosListSelectionListener());
+        personasPanel.add(scenariosList, BorderLayout.LINE_START);
+
+        // Text area
+        scenariosTextArea = new JTextArea(20, 35);
+        scenariosTextArea.setEditable(false);
+        scenariosTextArea.setWrapStyleWord(true);
+        scenariosTextArea.setLineWrap(true);
+        ArrayList<String> lines = Resources.getLines("/edu/ou/cs/hci/resources/scenarios/descriptions.txt");
+        if(lines.size() == 0) {
+            scenariosTextArea.setText("Error, Unable to load descriptions!");
+        } else {
+            scenariosTextArea.setText(lines.get(0));
+        }
+        personasPanel.add(scenariosTextArea, BorderLayout.LINE_END);
+
+        // Configure JFrame
+        personasFrame.add(personasPanel);
+		personasFrame.setBounds(100, 100, 600, 400);
+		personasFrame.setVisible(true);
+		personasFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	//**********************************************************************
@@ -185,6 +228,22 @@ public final class Stage1
 		c.gridy = y;
 		panel.add(lab, c);
 	}
+
+	// List selection listener
+    private static class ScenariosListSelectionListener implements ListSelectionListener {
+
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            ArrayList<String> lines = Resources.getLines("/edu/ou/cs/hci/resources/scenarios/descriptions.txt");
+
+            // Graceful error checking
+            if (lines.size() <= scenariosList.getSelectedIndex()) {
+                scenariosTextArea.setText("Error occurred, unable to read descriptions!");
+            } else {
+                scenariosTextArea.setText(lines.get(scenariosList.getSelectedIndex()));
+            }
+        }
+    }
 }
 
 //******************************************************************************
