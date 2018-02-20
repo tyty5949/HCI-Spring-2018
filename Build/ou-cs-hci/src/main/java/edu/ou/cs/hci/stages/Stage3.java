@@ -173,22 +173,26 @@ public final class Stage3
 		//**********************************************************************
 		// Frame for Questionnaire
 		//**********************************************************************
+        long startTime = System.currentTimeMillis();
 		JFrame questionnaireFrame = new JFrame("iMovie Questionnaire");
 		JPanel questionnairePanel = new JPanel(new GridBagLayout());
 
 		// Question 1
 		JPanel q1Panel = new JPanel(new BorderLayout());
-		JLabel question1Label = new JLabel("1) How much effort would you say you put into finding new movies to watch?");
+		JLabel question1Label = new JLabel("1) On average, how many minutes do you spend selecting your movies?");
 		q1Panel.add(question1Label, BorderLayout.NORTH);
-        JSlider q1Slider = new JSlider(JSlider.HORIZONTAL, 0, 2, 0);
-        q1Slider.setSize(200, 30);
+        JSlider q1Slider = new JSlider(JSlider.HORIZONTAL, 0, 5, 0);
+        q1Slider.setSize(400, 30);
         Hashtable<Integer, JLabel> sliderTable = new Hashtable<>();
-        sliderTable.put(0, new JLabel("None"));
-        sliderTable.put(1, new JLabel("Some"));
-        sliderTable.put(2, new JLabel("A lot"));
+        sliderTable.put(0, new JLabel("0-9"));
+        sliderTable.put(1, new JLabel("10-19"));
+        sliderTable.put(2, new JLabel("20-29"));
+        sliderTable.put(3, new JLabel("30-39"));
+        sliderTable.put(4, new JLabel("40-49"));
+        sliderTable.put(5, new JLabel("50+"));
         q1Slider.setLabelTable(sliderTable);
         q1Slider.setPaintLabels(true);
-        q1Panel.add(q1Slider, BorderLayout.WEST);
+        q1Panel.add(q1Slider, BorderLayout.CENTER);
 		c.insets = new Insets(20, 20, 0, 20);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
@@ -246,21 +250,21 @@ public final class Stage3
 
 		// Question 4
 		JPanel q4Panel = new JPanel(new GridLayout(6,1));
-		JLabel question4Label = new JLabel("4) I am comfortable with utilizing search and sort functions to find movies that I might like to watch?");
+		JLabel question4Label = new JLabel("4) How well do your searches typically match what you are looking for?");
 		q4Panel.add(question4Label);
-		JRadioButton stronglyAgree = new JRadioButton("Strongly Agree");
+		JRadioButton stronglyAgree = new JRadioButton("On Target");
         stronglyAgree.addActionListener(new Question4ActionListener());
         q4Panel.add(stronglyAgree);
-	    JRadioButton agree = new JRadioButton("Agree");
+	    JRadioButton agree = new JRadioButton("Very Well");
         agree.addActionListener(new Question4ActionListener());
         q4Panel.add(agree);
-	    JRadioButton neutral = new JRadioButton("Neutral");
+	    JRadioButton neutral = new JRadioButton("Somewhat Well");
         neutral.addActionListener(new Question4ActionListener());
         q4Panel.add(neutral);
-	    JRadioButton disagree = new JRadioButton("Disagree");
+	    JRadioButton disagree = new JRadioButton("Okay");
         disagree.addActionListener(new Question4ActionListener());
         q4Panel.add(disagree);
-	    JRadioButton stronglyDisagree = new JRadioButton("Strongly Disagree");
+	    JRadioButton stronglyDisagree = new JRadioButton("Poor");
         stronglyDisagree.addActionListener(new Question4ActionListener());
         q4Panel.add(stronglyDisagree);
 	    ButtonGroup q4Group = new ButtonGroup();
@@ -281,7 +285,7 @@ public final class Stage3
 
 		// Question 5
 		JPanel q5Panel = new JPanel(new GridLayout(2,1));
-        JLabel question5Label = new JLabel("5) In a couple sentences describe your current method for finding new movies to watch.");
+        JLabel question5Label = new JLabel("5) Give 1-2 complaints about the way you currently search for movies.");
         q5Panel.add(question5Label);
         JTextArea q5TextArea = new JTextArea();
         q5TextArea.addFocusListener(new Question5FocusListener());
@@ -307,7 +311,7 @@ public final class Stage3
         finishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] options = new String[]{"None", "Some", "A lot"};
+                String[] options = new String[]{"0-9", "10-19", "20-29", "30-39", "40-49", "50+"};
                 System.out.println(question1Label.getText() + "\n\t" + options[q1Slider.getValue()]);
                 System.out.println(question2Label.getText() + "\n\t" + q2Spinner.getValue());
                 ArrayList<String> selected = new ArrayList<>();
@@ -326,6 +330,7 @@ public final class Stage3
                 System.out.println(question3Label.getText() + "\n\t" + selected);
                 System.out.println(question4Label.getText() + "\n\t" + selectedLikert);
                 System.out.println(question5Label.getText() + "\n\t" + q5TextArea.getText());
+                System.out.println("\nTime Taken: " + (System.currentTimeMillis() - startTime) / 1000 + "s");
                 questionnaireFrame.setVisible(false);
             }
         });
@@ -341,7 +346,7 @@ public final class Stage3
         questionnairePanel.add(finishPanel, c);
 
         //Displays the frame
-        questionnaireFrame.setBounds(50, 50, 700, 800);
+        questionnaireFrame.setBounds(50, 50, 620, 800);
         questionnaireFrame.getContentPane().setLayout(new BorderLayout());
         questionnaireFrame.getContentPane().add(questionnairePanel, BorderLayout.CENTER);
         questionnaireFrame.setVisible(true);
