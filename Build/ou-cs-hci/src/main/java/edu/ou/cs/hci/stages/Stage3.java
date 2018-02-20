@@ -24,9 +24,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 //******************************************************************************
 
@@ -47,6 +47,13 @@ public final class Stage3
 
 	private static JList<String> scenariosList;
 	private static JTextArea scenariosTextArea;
+
+    // Questionnaire Setup
+    private static boolean q3Touched = false;
+    private static boolean q4Touched = false;
+    private static boolean q5Touched = false;
+    private static JButton finishButton;
+    private static String selectedLikert = "";
 
     //**********************************************************************
 	// Main
@@ -160,20 +167,29 @@ public final class Stage3
         personasFrame.add(personasPanel);
 		personasFrame.setBounds(100, 100, 600, 400);
 		personasFrame.setVisible(false);
-		personasFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		personasFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
 
 		//**********************************************************************
-		// Frame for Questionaire
+		// Frame for Questionnaire
 		//**********************************************************************
-		JFrame questionaireFrame = new JFrame("questionaire");
-		JPanel questionairePanel = new JPanel(new GridBagLayout());
+		JFrame questionnaireFrame = new JFrame("iMovie Questionnaire");
+		JPanel questionnairePanel = new JPanel(new GridBagLayout());
 
 		// Question 1
-		JPanel q1Panel = new JPanel(new GridLayout(2,1));
+		JPanel q1Panel = new JPanel(new BorderLayout());
 		JLabel question1Label = new JLabel("1) How much effort would you say you put into finding new movies to watch?");
-		q1Panel.add(question1Label);
-		c.insets = new Insets(20, 20, 20, 20);
+		q1Panel.add(question1Label, BorderLayout.NORTH);
+        JSlider q1Slider = new JSlider(JSlider.HORIZONTAL, 0, 2, 0);
+        q1Slider.setSize(200, 30);
+        Hashtable<Integer, JLabel> sliderTable = new Hashtable<>();
+        sliderTable.put(0, new JLabel("None"));
+        sliderTable.put(1, new JLabel("Some"));
+        sliderTable.put(2, new JLabel("A lot"));
+        q1Slider.setLabelTable(sliderTable);
+        q1Slider.setPaintLabels(true);
+        q1Panel.add(q1Slider, BorderLayout.WEST);
+		c.insets = new Insets(20, 20, 0, 20);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
@@ -181,39 +197,44 @@ public final class Stage3
         c.gridwidth = 1;
         c.weightx = .5;
         c.weighty = .5;
-        questionairePanel.add(q1Panel, c);
+        questionnairePanel.add(q1Panel, c);
         
 
 		// Question 2
-		JPanel q2Panel = new JPanel(new GridLayout(2,1));
+		JPanel q2Panel = new JPanel(new BorderLayout());
 		JLabel question2Label = new JLabel("2) On average, how many movies do you stream to your devices from home a week?");
-		q2Panel.add(question2Label)
+		q2Panel.add(question2Label, BorderLayout.NORTH);
         SpinnerModel spinnerModel = new SpinnerNumberModel(1,0,10,1);
         JSpinner q2Spinner = new JSpinner(spinnerModel);
-        q2Panel.add(q2Spinner);
-        c.insets = new Insets(20, 20, 20, 20);
+        ((JSpinner.DefaultEditor) q2Spinner.getEditor()).getTextField().setColumns(2);
+        q2Panel.add(q2Spinner, BorderLayout.WEST);
+        c.insets = new Insets(20, 20, 5, 20);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 1;
         c.gridheight = 1;
         c.gridwidth = 1;
-        c.weightx = .5;
-        c.weighty = .5;
-        questionairePanel.add(q2Panel, c);
+        c.weightx = .25;
+        c.weighty = .75;
+        questionnairePanel.add(q2Panel, c);
 
 		// Question 3
 		JPanel q3Panel = new JPanel(new GridLayout(5,1));
         JLabel question3Label = new JLabel("3) Select the search metrics you are most likely to use when trying to find a movie?");
         q3Panel.add(question3Label);
         JCheckBox genre = new JCheckBox("Genre");
+        genre.addActionListener(new Question3ActionListener());
         q3Panel.add(genre);
         JCheckBox runtime = new JCheckBox("Runtime");
+        runtime.addActionListener(new Question3ActionListener());
         q3Panel.add(runtime);
         JCheckBox actorsDirectors = new JCheckBox("Actors/Directors");
+        actorsDirectors.addActionListener(new Question3ActionListener());
         q3Panel.add(actorsDirectors);
         JCheckBox rottenTomatoes = new JCheckBox("Rotten Tomatoes");
+        rottenTomatoes.addActionListener(new Question3ActionListener());
         q3Panel.add(rottenTomatoes);
-        c.insets = new Insets(20, 20, 20, 20);
+        c.insets = new Insets(20, 20, 5, 20);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 2;
@@ -221,25 +242,34 @@ public final class Stage3
         c.gridwidth = 1;
         c.weightx = .5;
         c.weighty = .5;
-        questionairePanel.add(q3Panel, c);
+        questionnairePanel.add(q3Panel, c);
 
 		// Question 4
-		JPanel q4Panel = new JPanel(new GridLayout(2,1));
+		JPanel q4Panel = new JPanel(new GridLayout(6,1));
 		JLabel question4Label = new JLabel("4) I am comfortable with utilizing search and sort functions to find movies that I might like to watch?");
 		q4Panel.add(question4Label);
 		JRadioButton stronglyAgree = new JRadioButton("Strongly Agree");
+        stronglyAgree.addActionListener(new Question4ActionListener());
+        q4Panel.add(stronglyAgree);
 	    JRadioButton agree = new JRadioButton("Agree");
+        agree.addActionListener(new Question4ActionListener());
+        q4Panel.add(agree);
 	    JRadioButton neutral = new JRadioButton("Neutral");
+        neutral.addActionListener(new Question4ActionListener());
+        q4Panel.add(neutral);
 	    JRadioButton disagree = new JRadioButton("Disagree");
+        disagree.addActionListener(new Question4ActionListener());
+        q4Panel.add(disagree);
 	    JRadioButton stronglyDisagree = new JRadioButton("Strongly Disagree");
+        stronglyDisagree.addActionListener(new Question4ActionListener());
+        q4Panel.add(stronglyDisagree);
 	    ButtonGroup q4Group = new ButtonGroup();
 	    q4Group.add(stronglyAgree);
 	    q4Group.add(agree);
 	    q4Group.add(neutral);
 	    q4Group.add(disagree);
 	    q4Group.add(stronglyDisagree);
-	    q4Panel.add(q4Group);
-	    c.insets = new Insets(20, 20, 20, 20);
+	    c.insets = new Insets(20, 20, 5, 20);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 3;
@@ -247,15 +277,20 @@ public final class Stage3
         c.gridwidth = 1;
         c.weightx = .5;
         c.weighty = .5;
-        questionairePanel.add(q4Panel, c);
+        questionnairePanel.add(q4Panel, c);
 
 		// Question 5
 		JPanel q5Panel = new JPanel(new GridLayout(2,1));
         JLabel question5Label = new JLabel("5) In a couple sentences describe your current method for finding new movies to watch.");
         q5Panel.add(question5Label);
-        JTextArea q5TextArea = new JTextArea("Test");
-        q5Panel.add(q5TextArea);
-		c.insets = new Insets(20, 20, 20, 20);
+        JTextArea q5TextArea = new JTextArea();
+        q5TextArea.addFocusListener(new Question5FocusListener());
+        q5TextArea.setLineWrap(true);
+        JScrollPane q5Scroll = new JScrollPane(q5TextArea);
+        q5Scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        q5Scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        q5Panel.add(q5Scroll);
+		c.insets = new Insets(20, 20, 5, 20);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 4;
@@ -263,19 +298,54 @@ public final class Stage3
         c.gridwidth = 1;
         c.weightx = .5;
         c.weighty = .5;
-        questionairePanel.add(q5Panel, c);
+        questionnairePanel.add(q5Panel, c);
+
+        JPanel finishPanel = new JPanel(new BorderLayout());
+        finishButton = new JButton("Finish");
+        finishButton.setEnabled(false);
+        finishButton.setMaximumSize(new Dimension(100, 30));
+        finishButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String[] options = new String[]{"None", "Some", "A lot"};
+                System.out.println(question1Label.getText() + "\n\t" + options[q1Slider.getValue()]);
+                System.out.println(question2Label.getText() + "\n\t" + q2Spinner.getValue());
+                ArrayList<String> selected = new ArrayList<>();
+                if(genre.isSelected()) {
+                    selected.add("Genre");
+                }
+                if (runtime.isSelected()) {
+                    selected.add("Runtime");
+                }
+                if (actorsDirectors.isSelected()) {
+                    selected.add("Actors/Directors");
+                }
+                if (rottenTomatoes.isSelected()) {
+                    selected.add("Rotten Tomatoes");
+                }
+                System.out.println(question3Label.getText() + "\n\t" + selected);
+                System.out.println(question4Label.getText() + "\n\t" + selectedLikert);
+                System.out.println(question5Label.getText() + "\n\t" + q5TextArea.getText());
+                questionnaireFrame.setVisible(false);
+            }
+        });
+        finishPanel.add(finishButton, BorderLayout.EAST);
+        c.insets = new Insets(20, 20, 20, 20);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 5;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.weightx = .2;
+        c.weighty = .8;
+        questionnairePanel.add(finishPanel, c);
 
         //Displays the frame
-        questionAireFrame.add(questionairePanel);
-        frame.setVisible(false);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        //Closing frame exits the program
-        frame.addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    System.exit(0);
-                }
-            });
+        questionnaireFrame.setBounds(50, 50, 700, 800);
+        questionnaireFrame.getContentPane().setLayout(new BorderLayout());
+        questionnaireFrame.getContentPane().add(questionnairePanel, BorderLayout.CENTER);
+        questionnaireFrame.setVisible(true);
+        questionnaireFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 
 	//**********************************************************************
@@ -358,6 +428,45 @@ public final class Stage3
                 scenariosTextArea.setText(lines.get(scenariosList.getSelectedIndex()));
             }
         }
+    }
+
+    // Question 3 listener
+    private static class Question3ActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            q3Touched = true;
+            if (q4Touched && q5Touched) {
+                finishButton.setEnabled(true);
+            }
+        }
+    }
+
+    // Question 4 listener
+    private static class Question4ActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JRadioButton rb = (JRadioButton) e.getSource();
+            selectedLikert = rb.getText();
+            q4Touched = true;
+            if (q3Touched && q5Touched) {
+                finishButton.setEnabled(true);
+            }
+        }
+    }
+
+    // Question 5 listener
+    private static class Question5FocusListener implements FocusListener {
+
+        @Override
+        public void focusGained(FocusEvent e) {
+            q5Touched = true;
+            if (q3Touched && q4Touched ) {
+                finishButton.setEnabled(true);
+            }
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) { }
     }
 }
 

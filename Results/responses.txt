@@ -1,0 +1,10 @@
+1) How much effort would you say you put into finding new movies to watch?
+        Some
+2) On average, how many movies do you stream to your devices from home a week?
+        3
+3) Select the search metrics you are most likely to use when trying to find a movie?
+        [Runtime, Rotten Tomatoes]
+4) I am comfortable with utilizing search and sort functions to find movies that I might like to watch?
+        Agree
+5) In a couple sentences describe your current method for finding new movies to watch.
+        I search for popular movies on IMDB and then find one which is streamable.
