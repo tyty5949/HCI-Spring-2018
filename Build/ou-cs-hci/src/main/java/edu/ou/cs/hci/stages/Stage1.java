@@ -18,8 +18,13 @@ package edu.ou.cs.hci.stages;
 //import java.lang.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import edu.ou.cs.hci.resources.Resources;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 //******************************************************************************
 
@@ -116,7 +121,7 @@ public final class Stage1
 						System.exit(0);
 					}
 				});
-		
+
 	}
 
 	//**********************************************************************

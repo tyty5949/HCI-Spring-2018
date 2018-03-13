@@ -19,10 +19,15 @@ package edu.ou.cs.hci.stages;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Hashtable;
+
 import edu.ou.cs.hci.resources.Resources;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -175,6 +180,253 @@ public final class Stage3
 		    list.addListSelectionListener(listSelectionListener);
 		    list.setSelectedIndex(0);
 		f.setVisible(false);
+		
+		
+		//New frame to display survey
+		JFrame			fr = new JFrame("Survey");
+		JPanel			pa = new JPanel(new GridBagLayout());
+		//Add an empty border around the edge
+		pa.setBorder(new EmptyBorder(10, 10, 10, 10));
+		GridBagConstraints con = new GridBagConstraints();
+		con.insets = new Insets(3,3,3,3);
+		
+		fr.setBounds(100, 100, 700, 700);
+		fr.getContentPane().setLayout(new BorderLayout());
+		fr.getContentPane().add(pa, BorderLayout.CENTER);
+		
+		String[] responses = new String[5];
+		boolean[] selected = new boolean[5];
+		for (int i = 0; i < 5; i++) {
+			responses[i] = "";
+			selected[i] = false;
+		}
+		
+		JButton finish = new JButton("Finish");
+
+		makelabel("Which of the following devices do you search for movies on?", 0, 0, con, pa);
+		
+		
+		JCheckBox laptop = new JCheckBox("Laptop");
+		JCheckBox tablet = new JCheckBox("Tablet");
+		JCheckBox smartphone = new JCheckBox("Smartphone");
+		JCheckBox smartTV = new JCheckBox("SmartTV");
+		JCheckBox streaming = new JCheckBox("Streaming Device (Chromecast, FireTV, etc.)");
+		ItemListener itemlistener = new ItemListener() {
+			public void itemStateChanged(ItemEvent itemEvent) {
+		        AbstractButton abstractButton = (AbstractButton)itemEvent.getSource();
+		        int state = itemEvent.getStateChange();
+		        if (state == ItemEvent.SELECTED) {
+		        		selected[0] = true;
+		        		if (selected[0] == true && selected[1] == true && selected[2] == true
+								&& selected[3] == true && selected[4] == true)
+						finish.setEnabled(true);
+		        }
+		     }
+		};
+		
+		laptop.addItemListener(itemlistener); 
+		tablet.addItemListener(itemlistener);
+		smartphone.addItemListener(itemlistener);
+		smartTV.addItemListener(itemlistener);
+		streaming.addItemListener(itemlistener);
+		con.gridy = 1;
+		pa.add(laptop, con);
+		con.gridy = 2;
+		pa.add(tablet, con);
+		con.gridy = 3;
+		pa.add(smartphone, con);
+		con.gridy = 4;
+		pa.add(smartTV, con);
+		con.gridy = 5;
+		pa.add(streaming, con);
+		
+		
+		makelabel("On average, how many minutes do you spend selecting your movies?", 0, 6, con, pa);
+		
+		ButtonGroup radio = new ButtonGroup();
+		JRadioButton one = new JRadioButton("0-9");
+		JRadioButton two = new JRadioButton("10-19");
+		JRadioButton three = new JRadioButton("20-29");
+		JRadioButton four = new JRadioButton("30-39");
+		JRadioButton five = new JRadioButton("40-49");
+		JRadioButton six = new JRadioButton("50+");
+		ItemListener itemlis = new ItemListener() {
+			public void itemStateChanged(ItemEvent itemEvent) {
+		        int state = itemEvent.getStateChange();
+		        if (state == ItemEvent.SELECTED) {
+		        		selected[1] = true;
+		        		if (selected[0] == true && selected[1] == true && selected[2] == true
+								&& selected[3] == true && selected[4] == true)
+						finish.setEnabled(true);
+		        }
+		     }
+		};
+		
+		one.addItemListener(itemlis);
+		two.addItemListener(itemlis);
+		three.addItemListener(itemlis);
+		four.addItemListener(itemlis);
+		five.addItemListener(itemlis);
+		six.addItemListener(itemlis);
+		radio.add(one);
+		radio.add(two);
+		radio.add(three);
+		radio.add(four);
+		radio.add(five);
+		radio.add(six);
+		
+		
+		
+		con.gridy = 7;
+		pa.add(one, con);
+		con.gridy = 8;
+		pa.add(two, con);
+		con.gridy = 9;
+		pa.add(three, con);
+		con.gridy = 10;
+		pa.add(four, con);
+		con.gridy = 11;
+		pa.add(five, con);
+		con.gridy = 12;
+		pa.add(six, con);
+		
+		makelabel("How many factors (such as genre, actors, ratings) do you consider when choosing your movies?",
+				0, 13, con, pa);
+		String[] factors = {"0", "1", "2", "3", "4", "5+"};
+		SpinnerListModel factor = new SpinnerListModel(factors);
+		JSpinner fac = new JSpinner(factor);
+		fac.addComponentListener(new ComponentListener() {
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				selected[2] = true;
+				if (selected[0] == true && selected[1] == true && selected[2] == true
+						&& selected[3] == true && selected[4] == true)
+				finish.setEnabled(true);
+			}
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void componentShown(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+	    });
+		con.gridy = 14;
+		pa.add(fac, con);
+		
+		makelabel("How important is movie selection to you when streaming movies?", 0, 15, con, pa);
+		JSlider levels = new JSlider(JSlider.HORIZONTAL, 0, 4, 2);
+		levels.setMajorTickSpacing(1);
+		levels.setPaintTicks(true);
+		levels.setSnapToTicks(true);
+		Hashtable<Integer, JLabel> labeltable = new Hashtable<Integer, JLabel>();
+		labeltable.put(new Integer(0), new JLabel("Very Unimportant"));
+		labeltable.put(new Integer(1), new JLabel("Unimportant"));
+		labeltable.put(new Integer(2), new JLabel("Neutral"));
+		labeltable.put(new Integer(3), new JLabel("Important"));
+		labeltable.put(new Integer(4), new JLabel("Very Important"));
+		levels.setLabelTable(labeltable);
+		
+		levels.setPaintLabels(true);
+		
+		levels.addChangeListener(new ChangeListener() {
+				@Override
+				public void stateChanged(javax.swing.event.ChangeEvent e) {
+					// TODO Auto-generated method stub
+					selected[3] = true;
+					if (selected[0] == true && selected[1] == true && selected[2] == true
+							&& selected[3] == true && selected[4] == true)
+					finish.setEnabled(true);
+				}
+		});
+		
+		con.gridy = 16;
+		pa.add(levels, con);
+		
+		makelabel("Describe which feature in iFilm is best for your movie selection process. What makes it so effective?",
+				0, 17, con, pa);
+		
+		JTextArea answer = new JTextArea();
+		answer.setLineWrap(true);
+	    answer.setWrapStyleWord(true);
+		answer.addCaretListener(new CaretListener() {
+
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				// TODO Auto-generated method stub
+				selected[4] = true;
+				if (selected[0] == true && selected[1] == true && selected[2] == true
+						&& selected[3] == true && selected[4] == true)
+				finish.setEnabled(true);
+			}
+			
+		});
+		
+		JScrollPane scroll = new JScrollPane(answer);
+		scroll.setPreferredSize(new Dimension(100, 100));
+		con.gridy = 18;
+		con.gridheight = 2;
+		pa.add(scroll, con);
+		
+		con.gridy = 20;
+		con.gridheight = 1;
+		finish.setEnabled(false);
+		finish.addActionListener(new ActionListener() {
+		       @SuppressWarnings("deprecation")
+			public void actionPerformed(ActionEvent e) {
+		             // this makes sure the button you are pressing is the button variable
+		             if(e.getSource() == finish) {
+		            	 	if (laptop.isSelected()) 
+		            	 		responses[0] += laptop.getLabel() + " ";
+		            	 	if (tablet.isSelected()) 
+		            	 		responses[0] += tablet.getLabel() + " ";
+		            	 	if (smartphone.isSelected()) 
+		            	 		responses[0] += smartphone.getLabel() + " ";
+		            	 	if (smartTV.isSelected()) 
+		            	 		responses[0] += smartTV.getLabel() + " ";
+		            	 	if (streaming.isSelected()) 
+		            	 		responses[0] += streaming.getLabel() + " ";
+		            	 	if (one.isSelected()) 
+		            	 		responses[1] += one.getLabel();
+		            	 	if (two.isSelected()) 
+		            	 		responses[1] += two.getLabel();
+		            	 	if (three.isSelected()) 
+		            	 		responses[1] += three.getLabel();
+		            	 	if (four.isSelected()) 
+		            	 		responses[1] += four.getLabel();
+		            	 	if (five.isSelected()) 
+		            	 		responses[1] += five.getLabel();
+		            	 	if (six.isSelected()) 
+		            	 		responses[1] += six.getLabel();
+		            	 	responses[2] += fac.getValue();
+		            	 	responses[3] += labeltable.get(levels.getValue()).getText();
+		            	 	responses[4] += answer.getText();
+		            	 	for (int i = 0; i < 5; i++) {
+		            	 		System.out.println(responses[i]);
+		            	 	}
+		            	 	fr.dispatchEvent(new WindowEvent(fr, WindowEvent.WINDOW_CLOSING));
+		              }
+		       }
+		 });
+		con.fill = GridBagConstraints.HORIZONTAL;
+		pa.add(finish, con);
+		
+		fr.pack();
+		fr.setVisible(true);
+		fr.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 	}
 
 	//**********************************************************************

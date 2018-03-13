@@ -1,0 +1,12 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Sketch:\
+This sketch incorporates most guidelines proposed by the group. Because \'93Add Movie\'94 is such an important functionality, there is a button for it on the top left of my sketch. Next, each movie is editable by pressing the \'93Edit Movie\'94 button located below the movie description. The sort bar is right underneath the search bar for easy access to movies. Finally, movies are also deletable by pressing the \'93Delete Movie\'94 button under the movie description. Creating movie groups has not yet been established in this sketch, but is intended to be in a menu bar in future versions.\
+\
+Prototype:\
+My prototype follows the sketch as fully as possible, therefore all features that were discussed are visible on the frame. As of now, Search, Filter, Sort, Add, Edit, and Delete functionalities have not been implemented and are currently just graphical widgets. This prototype does output all selected elements to a selected text file.}

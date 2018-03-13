@@ -110,6 +110,7 @@ createScript(project, 'edu.ou.cs.hci.stages.BuildTest', 'build-test', altJvmArgs
 //createScript(project, 'edu.ou.cs.hci.stages.Stage1', 'stage1', altJvmArgs)
 //createScript(project, 'edu.ou.cs.hci.stages.Stage2', 'stage2', altJvmArgs)
 //createScript(project, 'edu.ou.cs.hci.stages.Stage3', 'stage3', altJvmArgs)
+createScript(project, 'edu.ou.cs.hci.stages.Stage4', 'stage4', altJvmArgs)
 
 //******************************************************************************
 // Source Sets
