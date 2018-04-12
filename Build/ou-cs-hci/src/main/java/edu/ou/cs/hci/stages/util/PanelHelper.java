@@ -64,11 +64,11 @@ public class PanelHelper {
     public static Component[] makeMetadataField(String fieldTitle, String fieldText) {
         // Construct the panel
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(new Color(204, 228, 255));
         JLabel label = new JLabel(fieldTitle);
         panel.add(label);
         JTextArea textArea = new JTextArea(fieldText);
-        textArea.setBackground(Color.WHITE);
+        textArea.setBackground(new Color(204, 228, 255));
         textArea.setEditable(true);
         textArea.setBorder(new EmptyBorder(0, 0, 0, 0));
         panel.add(textArea);
@@ -92,11 +92,11 @@ public class PanelHelper {
     public static Component[] makeMetadataArea(String areaTitle, String areaText) {
         // Construct the panel
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(new Color(204, 228, 255));
         JLabel label = new JLabel(areaTitle, SwingConstants.LEFT);
         panel.add(label, BorderLayout.NORTH);
         JTextArea textArea = new JTextArea(areaText);
-        textArea.setBackground(Color.WHITE);
+        textArea.setBackground(new Color(204, 228, 255));
         textArea.setEditable(true);
         textArea.setBorder(new EmptyBorder(0, 0, 0, 0));
         textArea.setLineWrap(true);
@@ -130,14 +130,14 @@ public class PanelHelper {
     public static Component[] makeFilterSection(String filterTitle, String[] options) {
         // Construct the panel
         JPanel panel = new JPanel(new GridLayout(1 + options.length, 1));
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(new Color(204, 228, 255));
         JLabel titleLabel = new JLabel(filterTitle, SwingConstants.LEFT);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
         panel.add(titleLabel);
         JCheckBox[] optionCheckBoxes = new JCheckBox[options.length];
         for (int i = 0; i < options.length; i++) {
             optionCheckBoxes[i] = new JCheckBox(options[i]);
-            optionCheckBoxes[i].setBackground(Color.WHITE);
+            optionCheckBoxes[i].setBackground(new Color(204, 228, 255));
             panel.add(optionCheckBoxes[i]);
         }
 

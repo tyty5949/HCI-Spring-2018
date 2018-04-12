@@ -1,5 +1,8 @@
 package edu.ou.cs.hci.stages.handlers;
 
+import edu.ou.cs.hci.stages.actions.Actions;
+import edu.ou.cs.hci.stages.panels.Stage7Panel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,8 +21,6 @@ import java.awt.event.ActionListener;
  * 20180313 [tyler]:  Original file created.
  */
 public class MenuBarHandler {
-    // TODO - Rename to be more fitting for menu bar and tool bar.
-    // TODO - Link panel components to handler, so action methods can actually do stuff
 
     /**
      * The action listener instance for all JMenuItems in the menubar.
@@ -32,11 +33,26 @@ public class MenuBarHandler {
     private ToolBarActionListener toolBarAL;
 
     /**
+     * Instance of the Stage7Panel class that is currently being run on the main JFrame.
+     * NOTE: USEFUL SO THAT WE POLL FIELDS WITHIN THE PANEL AND SUB-PANELS.
+     */
+    private Stage7Panel stage7Panel;
+
+    /**
      * Constructor which initializes the action listener instances.
      */
     public MenuBarHandler() {
         menuItemAL = new MenuItemActionListener();
         toolBarAL = new ToolBarActionListener();
+    }
+
+    /**
+     * Helper method which allows the instance of the Stage7Panel that will be running on the JFrame to be assigned.
+     *
+     * @param stage7Panel - The current instance of the Stage7Panel class that is running on the JFrame.
+     */
+    public void setPanel(Stage7Panel stage7Panel) {
+        this.stage7Panel = stage7Panel;
     }
 
     /**
@@ -57,146 +73,6 @@ public class MenuBarHandler {
         return toolBarAL;
     }
 
-    /**
-     * The action which is fired when the open button is pressed.
-     */
-    private void openAction() {
-        System.out.println("File->Open - Opens the database metadata from a file.");
-    }
-
-    /**
-     * The action which is fired when the save button is pressed.
-     */
-    private void saveAction() {
-        System.out.println("File->Save - Save the database metadata to a file.");
-    }
-
-    /**
-     * The action which is fired when the print button is pressed.
-     */
-    private void printAction() {
-        System.out.println("File->Print - Prints the database metadata to a document in a readable format.");
-    }
-
-    /**
-     * The action which is fired when the quit button is pressed.
-     */
-    private void quitAction() {
-        System.out.println("File->Quit - Quits the program without saving.");
-
-        // Call actions for 10 menu bar events
-        menuItemAL.actionPerformed(new ActionEvent(this, 1, "Clear Filters"));
-        menuItemAL.actionPerformed(new ActionEvent(this, 2, "Clear Metadata"));
-        menuItemAL.actionPerformed(new ActionEvent(this, 3, "Detail View"));
-        menuItemAL.actionPerformed(new ActionEvent(this, 4, "Poster View"));
-        menuItemAL.actionPerformed(new ActionEvent(this, 5, "Basic View"));
-        menuItemAL.actionPerformed(new ActionEvent(this, 6, "Advanced View"));
-        menuItemAL.actionPerformed(new ActionEvent(this, 7, "Browser Only"));
-        menuItemAL.actionPerformed(new ActionEvent(this, 8, "Editor Only"));
-        menuItemAL.actionPerformed(new ActionEvent(this, 9, "Reset View"));
-        menuItemAL.actionPerformed(new ActionEvent(this, 10, "Fullscreen"));
-
-        // Exit
-        System.exit(0);
-    }
-
-    /**
-     * The action which is fired when the paste button is pressed.
-     */
-    private void pasteAction() {
-        System.out.println("Edit->Paste - Pastes a copied movie into the database.");
-    }
-
-    /**
-     * The action which is fired when the copy button is pressed.
-     */
-    private void copyAction() {
-        System.out.println("Edit->Copy - Copies the selected movie from the database.");
-    }
-
-    /**
-     * The action which is fired when the cut button is pressed.
-     */
-    private void cutAction() {
-        System.out.println("Edit->Cut - Cuts the selected movie from the database. (Copy then delete)");
-    }
-
-    /**
-     * The action which is fired when the clear filters button is pressed.
-     */
-    private void clearFiltersAction() {
-        System.out.println("Edit->Clear Filters - Clears all of the enabled browsers filters.");
-    }
-
-    /**
-     * The action which is fired when the clear metadata action is pressed.
-     */
-    private void clearMetadataAction() {
-        System.out.println("Edit->Clear Metadata - Clears metadata within the currently selected movie.");
-    }
-
-    /**
-     * The action which is fired when the detail view button is pressed.
-     */
-    private void detailViewAction() {
-        System.out.println("View->Browser->Detail View - Shows details in browser instead of poster.");
-    }
-
-    /**
-     * The action which is fired when the poster view button is pressed.
-     */
-    private void posterViewAction() {
-        System.out.println("View->Browser->Poster View - Shows poster in browser instead of details.");
-    }
-
-    /**
-     * The action which is fired when the basic view button is pressed.
-     */
-    private void basicViewAction() {
-        System.out.println("View->Editor->Basic View - Only shows basic metadata of selected movie in the editor.");
-    }
-
-    /**
-     * The action which is fired when the advanced view button is pressed.
-     */
-    private void advancedViewAction() {
-        System.out.println("View->Editor->Advanced View - Shows all metadata of selected movie in the editor.");
-    }
-
-    /**
-     * The action which is fired when the browser only button is pressed.
-     */
-    private void browserOnlyAction() {
-        System.out.println("View->Browser Only - Shows only the movie browser.");
-    }
-
-    /**
-     * The action which is fired when the editor only button is pressed.
-     */
-    private void editorOnlyAction() {
-        System.out.println("View->Editor Only - Shows only the movie editor.");
-    }
-
-    /**
-     * The action which is fired when the reset view button is pressed.
-     */
-    private void resetViewAction() {
-        System.out.println("View->Reset View - Resets the view to the default. (Browser and editor)");
-    }
-
-    /**
-     * The action which is fired when the fullscreen button is pressed.
-     */
-    private void fullscreenAction() {
-        System.out.println("View->Fullscreen - Toggles back and forth between fullscreen and windowed modes.");
-    }
-
-    /**
-     * The action which is fired when the help website button is pressed.
-     */
-    private void websiteAction() {
-        System.out.println("Help->Website - Opens up a tasteful website.");
-    }
 
     /**
      * The action listener for all menu items in the menubar. The action command from each menu bar item is simply
@@ -217,75 +93,75 @@ public class MenuBarHandler {
             switch (e.getActionCommand()) {
                 case "Open":
                     // Open menu item pressed
-                    openAction();
+                    Actions.openAction(stage7Panel);
                     break;
                 case "Save":
                     // Save menu item pressed
-                    saveAction();
+                    Actions.saveAction(stage7Panel);
                     break;
                 case "Print":
                     // Print menu item pressed
-                    printAction();
+                    Actions.printAction(stage7Panel);
                     break;
                 case "Quit":
                     // Quit menu item pressed
-                    quitAction();
+                    Actions.quitAction(stage7Panel);
                     break;
                 case "Paste":
                     // Paste menu item pressed
-                    pasteAction();
+                    Actions.pasteAction(stage7Panel);
                     break;
                 case "Copy":
                     // Copy menu item pressed
-                    copyAction();
+                    Actions.copyAction(stage7Panel);
                     break;
                 case "Cut":
                     // Cut menu item pressed
-                    cutAction();
+                    Actions.cutAction(stage7Panel);
                     break;
                 case "Clear Filters":
                     // Clear filters menu item pressed
-                    clearFiltersAction();
+                    Actions.clearFiltersAction(stage7Panel);
                     break;
-                case "Clear Metadata":
+                case "Clear Selected Movie":
                     // Clear metadata menu item pressed
-                    clearMetadataAction();
+                    Actions.clearMetadataAction(stage7Panel);
                     break;
-                case "Detail View":
+                case "List View":
                     // Browser detailed view menu item pressed
-                    detailViewAction();
+                    Actions.detailViewAction(stage7Panel);
                     break;
                 case "Poster View":
                     // Browser poster view menu item pressed
-                    posterViewAction();
+                    Actions.posterViewAction(stage7Panel);
                     break;
                 case "Basic View":
                     // Editor basic view menu item pressed
-                    basicViewAction();
+                    Actions.basicViewAction(stage7Panel);
                     break;
                 case "Advanced View":
                     // Editor advanced menu item pressed
-                    advancedViewAction();
+                    Actions.advancedViewAction(stage7Panel);
                     break;
                 case "Browser Only":
                     // Browser only menu item pressed
-                    browserOnlyAction();
+                    Actions.browserOnlyAction(stage7Panel);
                     break;
                 case "Editor Only":
                     // Editor only menu item pressed
-                    editorOnlyAction();
+                    Actions.editorOnlyAction(stage7Panel);
                     break;
-                case "Reset View":
+                case "Default View":
                     // Reset view menu item pressed
-                    resetViewAction();
+                    Actions.resetViewAction(stage7Panel);
                     break;
                 case "Fullscreen":
                     // Fullscreen menu item pressed
-                    fullscreenAction();
+                    Actions.fullscreenAction(stage7Panel);
                     break;
                 case "Website":
                     // Website menu item pressed
-                    websiteAction();
+                    Actions.websiteAction(stage7Panel);
                     break;
             }
         }
@@ -310,23 +186,23 @@ public class MenuBarHandler {
             switch (e.getActionCommand()) {
                 case "Clear Filters":
                     // Clear filters menu item pressed
-                    clearFiltersAction();
+                    Actions.clearFiltersAction(stage7Panel);
                     break;
                 case "Detail View":
                     // Browser detailed view menu item pressed
-                    detailViewAction();
+                    Actions.detailViewAction(stage7Panel);
                     break;
                 case "Poster View":
                     // Browser poster view menu item pressed
-                    posterViewAction();
+                    Actions.posterViewAction(stage7Panel);
                     break;
                 case "Editor Only":
                     // Editor only menu item pressed
-                    editorOnlyAction();
+                    Actions.editorOnlyAction(stage7Panel);
                     break;
                 case "Reset View":
                     // Reset view menu item pressed
-                    resetViewAction();
+                    Actions.resetViewAction(stage7Panel);
                     break;
             }
         }

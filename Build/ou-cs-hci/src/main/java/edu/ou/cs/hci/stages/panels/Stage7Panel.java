@@ -5,26 +5,42 @@ import edu.ou.cs.hci.stages.util.PanelHelper;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 /**
- * The <CODE>Stage5Panel</CODE> class which is the JPanel for displaying stage 5 on a frame. Split up this way so that
- * the stages can be kept separate. Almost exactly the same as stage 4.
+ * The <CODE>Stage5Panel</CODE> class which is the JPanel for displaying stage 7 on a frame. Split up this way so that
+ * the stages can be kept separate. Almost exactly the same as stage 6.
  * *********************************************************************************************************************
  * Major Modification History:
  * 20180404 [tyler]:  Original file created.
- * 20180404 [tyler]:  Copied from Stage5Panel
+ * 20180404 [tyler]:  Copied from Stage6Panel
  */
-public class Stage6Panel extends JPanel {
+public class Stage7Panel extends JPanel {
 
     private JPanel workspacePanel;
     private EditorPanel editorPanel;
     private BrowserPanel browserPanel;
 
-    public Stage6Panel() {
+    // TODO - Add implementation for storing CSV files in here!
+
+    /**
+     * Opening up access to the internal panels so actions can access data within them.
+     *
+     * @return - The EditorPanel instance running on the main window.
+     */
+    public EditorPanel getEditorPanel() {
+        return editorPanel;
+    }
+
+    /**
+     * Opening up access to the internal panels so actions can access data within them.
+     *
+     * @return - The BrowserPanel instance running on the main window.
+     */
+    public BrowserPanel getBrowserPanel() {
+        return browserPanel;
+    }
+
+    public Stage7Panel() {
         // Setup panel
         setLayout(new GridBagLayout());
         setBackground(new Color(231, 202, 177));
@@ -38,33 +54,16 @@ public class Stage6Panel extends JPanel {
         add(titlePanel, gbc);
 
         // Editor panel
-        editorPanel = new EditorPanel();
+        editorPanel = new EditorPanel(this);
 
         // Browser panel
-        browserPanel = new BrowserPanel();
+        browserPanel = new BrowserPanel(this);
 
         // Workspace panel
         updateWorkspacePanel(0);
         PanelHelper.updateGBConstraints(gbc, 0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, .5, .5);
         add(workspacePanel, gbc);
-    }
-
-    public void writeWidgets(File file) {
-        PrintWriter printWriter = null;
-        try {
-            printWriter = new PrintWriter(file, "UTF-8");
-            printWriter.println("Editor panel:");
-            // TODO - Write file
-            printWriter.println("Filter panel:");
-            // TODO - Write file
-        } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } finally {
-            if (printWriter != null) {
-                printWriter.close();
-            }
-        }
     }
 
     private JPanel makeTitlePanel() {
@@ -84,7 +83,6 @@ public class Stage6Panel extends JPanel {
     }
 
     private void updateWorkspacePanel(int mode) {
-        // TODO - Implementation should change based on given mode
         // Setup panel
         workspacePanel = new JPanel(new GridBagLayout());
         workspacePanel.setBackground(new Color(231, 202, 177));

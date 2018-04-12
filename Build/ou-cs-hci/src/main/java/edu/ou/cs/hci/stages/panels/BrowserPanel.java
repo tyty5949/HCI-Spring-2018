@@ -1,5 +1,6 @@
 package edu.ou.cs.hci.stages.panels;
 
+import edu.ou.cs.hci.stages.handlers.BrowserHandler;
 import edu.ou.cs.hci.stages.util.PanelHelper;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ import java.awt.*;
  * 20180313 [tyler]:  Original file created.
  */
 @SuppressWarnings("FieldCanBeLocal")
-class BrowserPanel extends JPanel {
+public class BrowserPanel extends JPanel {
 
     //**********************************************************************
     // Private Class Members
@@ -36,6 +37,23 @@ class BrowserPanel extends JPanel {
      */
     private Component[] imdbRatingFilterComponents;
 
+    private BrowserHandler browserHandler;
+
+    //==============================================
+    // !?!?!? HELP LOCATED HERE !?!?!?!
+    //==============================================
+    /*
+     * HELP FOR ACCESSING THE SELECTED MOVIE IN THE LIST
+     *
+     * You can get the value of the list by using...
+     *     movieList.getSelectedValue();
+     * This will return the String is currently selected by the list.
+     */
+    /**
+     * Opening up the movieList JList object so that it can be accessed externally.
+     */
+    public JList<String> movieList;
+
     //**********************************************************************
     // Public Methods
     //**********************************************************************
@@ -44,20 +62,31 @@ class BrowserPanel extends JPanel {
      * Constructor which builds the browser panel.
      */
     BrowserPanel() {
+        this(null);
+    }
+
+    /**
+     * Constructor which builds the browser panel.
+     */
+    BrowserPanel(Stage7Panel stage7Panel) {
+        // Assign stage7panel
+        browserHandler = new BrowserHandler();
+        browserHandler.setStage7Panel(stage7Panel);
+
         // Setup panel
         setBorder(new EmptyBorder(0, 0, 0, 3));
-        setBackground(Color.WHITE);
+        setBackground(new Color(231, 202, 177));
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
         // Create search bar
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        searchPanel.setBackground(Color.WHITE);
+        searchPanel.setBackground(new Color(231, 202, 177));
         JLabel searchLabel = new JLabel("Search: ");
         searchPanel.add(searchLabel);
         JTextField searchTextField = new JTextField("");
         searchTextField.setColumns(28);
-        searchTextField.setBackground(Color.WHITE);
+        searchTextField.setBackground(new Color(204, 228, 255));
         searchPanel.add(searchTextField);
         PanelHelper.updateGBConstraints(gbc, 0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, .5, .001);
@@ -74,6 +103,7 @@ class BrowserPanel extends JPanel {
         JScrollPane filterScrollPane = new JScrollPane(filterPanel);
         filterScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         filterScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        filterScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         PanelHelper.updateGBConstraints(gbc, 1, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, .5, .9);
         gbc.insets = new Insets(0, 10, 0, 0);
@@ -84,7 +114,6 @@ class BrowserPanel extends JPanel {
     // Private Methods
     //**********************************************************************
 
-    // TODO - Implementation of detail and poster views
 
     /**
      * Helper method for building the browse sub-panel which contains the sort functionality and the actual JList
@@ -95,26 +124,25 @@ class BrowserPanel extends JPanel {
     private JPanel makeBrowsePanel() {
         // Create sub-panel
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(new Color(231, 202, 177));
         GridBagConstraints gbc = new GridBagConstraints();
 
         // Sort-by panel
         JPanel sortByPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        sortByPanel.setBackground(Color.WHITE);
+        sortByPanel.setBackground(new Color(231, 202, 177));
         JLabel sortByLabel = new JLabel("Sort by: ");
         sortByPanel.add(sortByLabel);
         JComboBox<String> sortByComboBox = new JComboBox<>(new String[]{"Title", "Runtime", "Release Date"});
+        sortByComboBox.setBackground(new Color(204, 228, 255));
         sortByPanel.add(sortByComboBox);
         PanelHelper.updateGBConstraints(gbc, 0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, .5, 0);
         panel.add(sortByPanel, gbc);
 
         // Create list of movies
-        String[] movies = new String[35];
-        for (int i = 0; i < movies.length; i++) {
-            movies[i] = "Movie #" + i;
-        }
-        JList<String> movieList = new JList<>(movies);
+        movieList = new JList<>(new String[]{"Test 1", "Test 2"});
+        movieList.addListSelectionListener(browserHandler.getMovieListSL());
+        movieList.setBackground(new Color(204, 228, 255));
         JScrollPane movieListScollPane = new JScrollPane(movieList);
         movieListScollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         movieListScollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -138,7 +166,7 @@ class BrowserPanel extends JPanel {
         // Create sub-panel
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(new Color(204, 228, 255));
 
         // Filter label
         JLabel filterLabel = new JLabel("Filter By ...");

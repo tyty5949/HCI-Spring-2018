@@ -18,7 +18,7 @@ package edu.ou.cs.hci.stages;
 
 import edu.ou.cs.hci.resources.Resources;
 import edu.ou.cs.hci.stages.handlers.MenuBarHandler;
-import edu.ou.cs.hci.stages.panels.Stage6Panel;
+import edu.ou.cs.hci.stages.panels.Stage7Panel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,16 +28,16 @@ import java.awt.event.WindowEvent;
 
 
 /**
- * The <CODE>EditorPanel</CODE> class which is the driver class for stage 6. Creates the Stage5Panel within a frame
+ * The <CODE>EditorPanel</CODE> class which is the driver class for stage 7. Creates the Stage7Panel within a frame
  * and adds a menu bar and a tool bar to it. Also links the action handler to all of the menu items and tool bar
  * buttons.
  * *********************************************************************************************************************
  * Major Modification History:
- * 20180404 [tyler]:  Original file created.
- * 20180404 [tyler]:  Copied from Stage5.java.
+ * 20180412 [tyler]:  Original file created.
+ * 20180412 [tyler]:  Copied from Stage7.java.
  */
 @SuppressWarnings("FieldCanBeLocal")
-public final class Stage6 {
+public final class Stage7 {
 
     //**********************************************************************
     // Private Class Members
@@ -51,47 +51,48 @@ public final class Stage6 {
     /**
      * The JPanel which holds all of the components that make up the stage 6 GUI.
      */
-    private Stage6Panel stage6Panel;
+    private Stage7Panel stage7Panel;
 
     /**
      * The JFrame which holds the the stage 6 panel
      */
-    private JFrame stage6Frame;
+    private JFrame stage7Frame;
 
     //**********************************************************************
     // Public Methods
     //**********************************************************************
 
     /**
-     * Constructor which constructs and shows the frame for stage 5. Includes the stage 5 panel, menu bar, and tool
+     * Constructor which constructs and shows the frame for stage 7. Includes the stage 7 panel, menu bar, and tool
      * bar.
      */
-    private Stage6() {
+    private Stage7() {
 
         // Create main panel
-        stage6Panel = new Stage6Panel();
+        stage7Panel = new Stage7Panel();
 
         // Create main frame
-        stage6Frame = new JFrame("iFilm - Stage 6");
-        stage6Frame.setBounds(50, 50, 1100, 650);
-        stage6Frame.getContentPane().setLayout(new BorderLayout());
-        stage6Frame.getContentPane().add(stage6Panel, BorderLayout.CENTER);
-        stage6Frame.setBackground(new Color(231, 202, 177));
-        stage6Frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        stage6Frame.addWindowListener(new MainWindowAdapter());
+        stage7Frame = new JFrame("iFilm - Stage 7");
+        stage7Frame.setBounds(50, 50, 1100, 650);
+        stage7Frame.getContentPane().setLayout(new BorderLayout());
+        stage7Frame.getContentPane().add(stage7Panel, BorderLayout.CENTER);
+        stage7Frame.setBackground(new Color(231, 202, 177));
+        stage7Frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        stage7Frame.addWindowListener(new MainWindowAdapter());
 
         // Initialize menu bar event handler
         menuBarHandler = new MenuBarHandler();
+        menuBarHandler.setPanel(stage7Panel);
 
         // Build menu
         makeMenu();
 
         // Built toolbar
         JToolBar toolBar = makeToolBar();
-        stage6Frame.getContentPane().add(toolBar, BorderLayout.PAGE_START);
+        stage7Frame.getContentPane().add(toolBar, BorderLayout.PAGE_START);
 
         // Show frame
-        stage6Frame.setVisible(true);
+        stage7Frame.setVisible(true);
     }
 
     //**********************************************************************
@@ -232,7 +233,7 @@ public final class Stage6 {
         helpMenu.add(websiteMenuItem);
 
         // Add menu bar to frame
-        stage6Frame.setJMenuBar(menuBar);
+        stage7Frame.setJMenuBar(menuBar);
     }
 
     /**
@@ -297,7 +298,7 @@ public final class Stage6 {
      * @param args - The program arguments (not used)
      */
     public static void main(String[] args) {
-        new Stage6();
+        new Stage7();
     }
 
     //**********************************************************************
